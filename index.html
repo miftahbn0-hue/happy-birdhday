@@ -42,18 +42,28 @@
             margin-bottom: 25px;
         }
 
+        /* Styling untuk Pesan Rahasia Final */
         #secretMessage {
             margin-top: 20px;
             padding: 20px;
             border: 2px dashed #999;
             background-color: #fff9e6;
             border-radius: 8px;
-            display: none; /* Awalnya disembunyikan */
+            display: none; 
             text-align: left;
-            word-wrap: break-word; /* Memastikan kata yang terlalu panjang akan pecah baris */
-white-space: normal; /* Menggunakan fungsi pecah baris normal */
         }
 
+        /* Styling untuk pesan transisi di Step 2 dan Step 3 */
+        #step2Container, #step3Container {
+            display: none;
+        }
+        #step2Message, #step3Message {
+            font-size: 1.5em;
+            color: #4a4a4a;
+            margin-bottom: 30px;
+        }
+
+        /* Styling Tombol */
         button {
             background-color: #ff9a8d;
             background-image: linear-gradient(45deg, #ff9a8d 0%, #ff6a88 55%, #ff99ac 100%);
@@ -74,19 +84,41 @@ white-space: normal; /* Menggunakan fungsi pecah baris normal */
         button:hover {
             transform: scale(1.05);
         }
+
+        /* CSS untuk Efek Transisi Fade */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .fade-in {
+            opacity: 1;
+            transition: opacity 1s ease-in;
+        }
     </style>
 </head>
 <body>
 
     <audio id="musicPlayer" src="monokrom.mp3" loop></audio>
 
-    <div id="button-container" class="container">
-        <h1>Selamat Ulang Tahun!</h1>
-        <p>Buka pesan rahasia di bawah ini untuk kejutan kecil dari saya.</p>
-        <button id="secretButton">Klik di Sini untuk Pesan Rahasia & Musik!</button>
+    <div id="step1Container" class="container fade-in">
+        <h1>SELAMAT ULANG TAHUN!</h1>
+        <p>Ada kejutan rahasia yang tersembunyi. Dibutuhkan 3 langkah untuk membukanya.</p>
+        <button id="step1Button">Langkah 1: Klik untuk Memulai Misi</button>
     </div>
 
-    <div id="secretMessage" class="surprise-content" style="display: none;">
+    <div id="step2Container" class="container">
+        <div id="step2Message">"Misi berhasil! Sekarang lanjutkan ke langkah kedua..."</div>
+        <button id="step2Button">Langkah 2: Proses Data Rahasia</button>
+    </div>
+    
+    <div id="step3Container" class="container">
+        <div id="step3Message">"Data rahasia telah diproses. Hanya satu klik lagi untuk membuka kejutan utamanya!"</div>
+        <button id="step3Button">Langkah 3: Buka Kejutan FINAL!</button>
+    </div>
+
+
+    <div id="secretMessage" class="surprise-content">
         <p>
             "Happy Birthday untuk kamu yang paling spesial.<br>
             Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,<br>
@@ -99,37 +131,80 @@ white-space: normal; /* Menggunakan fungsi pecah baris normal */
     </div>
 
     <script>
-        // FUNGSI CONFETTI (Memanggil library yang sudah di-link di head)
+        // FUNGSI CONFETTI 
         function playConfetti() {
             confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 } // Confetti jatuh dari atas
+                particleCount: 150, 
+                spread: 90, 
+                origin: { y: 0.6 } 
             });
         }
 
-        // FUNGSI UTAMA KEJUTAN
+        // FUNGSI TRANSISI UMUM
+        function transitionStep(currentStepId, nextStepId, callback = null) {
+            const currentStep = document.getElementById(currentStepId);
+            const nextStep = document.getElementById(nextStepId);
+
+            // 1. Mulai transisi fade-out
+            currentStep.classList.add('fade-out');
+            
+            // 2. Setelah fade-out selesai, sembunyikan dan tampilkan step berikutnya
+            setTimeout(() => {
+                currentStep.style.display = 'none';
+                currentStep.classList.remove('fade-out');
+                
+                if (nextStep) {
+                    nextStep.style.display = 'block';
+                    nextStep.classList.add('fade-in'); 
+                }
+                
+                // Jika ada callback (untuk kejutan final)
+                if (callback) {
+                    callback();
+                }
+
+            }, 500); // Waktu sesuai transisi CSS
+        }
+
+
+        // FUNGSI UNTUK KLIK PERTAMA (Pindah ke Step 2)
+        function startStep2() {
+            transitionStep('step1Container', 'step2Container');
+        }
+
+        // FUNGSI UNTUK KLIK KEDUA (Pindah ke Step 3)
+        function startStep3() {
+            transitionStep('step2Container', 'step3Container');
+        }
+
+
+        // FUNGSI UNTUK KLIK KETIGA (Kejutan Final)
         function playSurprise() {
             const audio = document.getElementById('musicPlayer');
             const messageContainer = document.getElementById('secretMessage');
-            const buttonContainer = document.getElementById('button-container'); 
             
-            // 1. Memutar Musik (dengan penanganan Autoplay Blocker)
-            audio.play().catch(e => console.error("Autoplay diblokir:", e));
-
-            // 2. Menampilkan Pesan dan Menyembunyikan Tombol
-            messageContainer.style.display = 'block';
-            buttonContainer.style.display = 'none';
-
-            // 3. Memunculkan Confetti
-            playConfetti();
+            // Lakukan transisi dari Step 3 ke Pesan Rahasia
+            transitionStep('step3Container', 'secretMessage', () => {
+                // Setelah pesan muncul, putar musik & confetti
+                audio.play().catch(e => console.error("Autoplay diblokir:", e));
+                playConfetti();
+            });
         }
 
-        // EVENT LISTENER: Memastikan tombol merespons setelah halaman dimuat
+        // EVENT LISTENER
         document.addEventListener('DOMContentLoaded', () => {
-            const button = document.getElementById('secretButton');
-            if (button) {
-                button.addEventListener('click', playSurprise);
+            const step1Button = document.getElementById('step1Button');
+            const step2Button = document.getElementById('step2Button');
+            const step3Button = document.getElementById('step3Button');
+
+            if (step1Button) {
+                step1Button.addEventListener('click', startStep2);
+            }
+            if (step2Button) {
+                step2Button.addEventListener('click', startStep3);
+            }
+            if (step3Button) {
+                step3Button.addEventListener('click', playSurprise);
             }
         });
     </script>
