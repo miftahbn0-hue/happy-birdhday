@@ -50,12 +50,12 @@
             margin-top: 20px;
             padding: 20px;
             border: 3px solid #ff69b4; 
-            background-color: #fff0f5; /* Warna pink sangat pucat */
+            background-color: #fff0f5; 
             border-radius: 12px;
             display: none; 
             text-align: left;
         }
-        #step2Container, #step3Container, #finalSurpriseContainer {
+        #step2Container, #step3Container, #zonkContainer, #finalSurpriseContainer {
             display: none;
         }
         #step2Message, #step3Message {
@@ -66,8 +66,8 @@
 
         /* Styling Catatan yang Bisa Digeser */
         #scrollableNote {
-            max-height: 200px; /* Tinggi Maksimal */
-            overflow-y: auto; /* Memunculkan Scroll Bar */
+            max-height: 200px; 
+            overflow-y: auto; 
             background-color: #fff;
             border: 1px solid #ffb6c1; 
             padding: 15px;
@@ -143,6 +143,27 @@
             0% { transform: scale(1); }
             100% { transform: scale(1.05); }
         }
+        
+        /* --- Animasi ZONK --- */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        .zonk-box {
+            animation: shake 0.5s; /* Kotak akan bergetar sebentar saat muncul */
+            border: 5px solid #ff0000 !important; /* Border warna merah yang menyolok */
+            background-color: #ffe0e0 !important; /* Background merah muda error */
+        }
     </style>
 </head>
 <body>
@@ -166,6 +187,11 @@
         <button id="step3Button" style="display: none;">Langkah 3: Buka Kejutan FINAL!</button>
     </div>
 
+    <div id="zonkContainer" class="container" style="margin-top: 40px; display: none;">
+        <h2>🚨 ZONK! ERROR KEMBALI! 🚨</h2>
+        <p>File kejutanmu ternyata korup dan gagal dibuka. Proses dibatalkan!</p>
+        <button id="nextStepAfterZonk">Coba Lagi (Mungkin Berhasil Kali Ini?)</button>
+    </div>
 
     <div id="secretMessage" class="surprise-content">
         
@@ -195,7 +221,7 @@
     
     <div id="finalSurpriseContainer" class="container" style="margin-top: 40px; border: 3px solid #ff69b4; display: none;">
         <h2>🎉 KEJUTAN PAMUNGKAS! 🎉</h2>
-        <p>Setelah pesan yang begitu panjang, ini adalah *gift* atau hadiah kecil dariku!</p>
+        <p>Ini adalah Hadiah Tambahan yang sudah kamu tunggu-tunggu!</p>
         <button onclick="window.location.href='[LINK HADIAH/VIDEO/GAMBAR DI SINI]'">Klaim Hadiah Spesial</button>
         <p style="font-size: 0.9em; margin-top: 15px;">Semoga hari ini jadi yang terbaik!</p>
     </div>
@@ -258,17 +284,31 @@
                 }, 2000); // Waktu Loading: 2 detik
             });
         }
+        
+        // FUNGSI UNTUK KLIK KETIGA (Memicu ZONK)
+        function activateZonk() {
+            const zonkContainer = document.getElementById('zonkContainer');
+            
+            // Lakukan transisi dari Step 3 ke ZONK Container
+            transitionStep('step3Container', 'zonkContainer', () => {
+                // Tambahkan kelas zonk-box untuk membuat kotak bergetar
+                zonkContainer.classList.add('zonk-box');
+                // Setelah 1.5 detik, hapus kelas zonk-box agar getaran berhenti
+                setTimeout(() => {
+                    zonkContainer.classList.remove('zonk-box');
+                }, 1500); 
+            });
+        }
 
-
-        // FUNGSI UNTUK KLIK KETIGA (Kejutan Final)
-        function playSurprise() {
+        // FUNGSI BARU: Memicu Kejutan ASLI (Pesan, Musik, Confetti)
+        function showRealSurprise() {
             const audio = document.getElementById('musicPlayer');
             const finalEmot = document.getElementById('finalEmot'); 
             const cartoonImage = document.getElementById('cartoonImage'); 
             const finalSurpriseContainer = document.getElementById('finalSurpriseContainer'); 
             
-            // Lakukan transisi dari Step 3 ke Pesan Rahasia
-            transitionStep('step3Container', 'secretMessage', () => {
+            // Lakukan transisi dari ZONK Container ke Pesan Rahasia
+            transitionStep('zonkContainer', 'secretMessage', () => {
                 // Setelah pesan muncul, putar musik & confetti
                 audio.play().catch(e => console.error("Autoplay diblokir:", e));
                 playConfetti();
@@ -282,7 +322,7 @@
                 setTimeout(() => {
                     finalSurpriseContainer.style.display = 'block';
                     finalSurpriseContainer.classList.add('fade-in'); 
-                }, 5000); // Kejutan tambahan muncul setelah 5 detik
+                }, 5000); 
             });
         }
 
@@ -291,6 +331,7 @@
             const step1Button = document.getElementById('step1Button');
             const step2Button = document.getElementById('step2Button');
             const step3Button = document.getElementById('step3Button');
+            const nextStepAfterZonk = document.getElementById('nextStepAfterZonk'); 
 
             if (step1Button) {
                 step1Button.addEventListener('click', startStep2);
@@ -299,7 +340,10 @@
                 step2Button.addEventListener('click', startStep3);
             }
             if (step3Button) {
-                step3Button.addEventListener('click', playSurprise);
+                step3Button.addEventListener('click', activateZonk); // Tombol 3 memicu ZONK
+            }
+            if (nextStepAfterZonk) {
+                nextStepAfterZonk.addEventListener('click', showRealSurprise); // Tombol ZONK memicu Kejutan ASLI
             }
         });
     </script>
