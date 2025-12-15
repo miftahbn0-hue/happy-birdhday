@@ -115,29 +115,52 @@
 
     <script>
 
-    // FUNGSI UTAMA UNTUK MEMUTAR KEJUTAN
-    function playSurprise() {
-        // 1. Memutar Musik (Pastikan ID-nya 'bday-music' di HTML atas)
-        const audio = document.getElementById('bday-music');
-        audio.play().catch(e => console.error("Autoplay diblokir:", e));
+   [21.13, 15/12/2025] mfth: <audio id="musicPlayer" src="monokrom.mp3" loop></audio>
 
-        // 2. Menampilkan Pesan dan Confetti
-        document.getElementById('surprise-container').style.display = 'flex';
-        document.getElementById('button-container').style.display = 'none';
+<div id="button-container" class="container">
+    <h1>Selamat Ulang Tahun!</h1>
+    <p>Buka pesan rahasia di bawah ini untuk kejutan kecil dari saya.</p>
+    <button id="secretButton">Klik di Sini untuk Pesan Rahasia & Musik!</button>
+</div>
 
-        // 3. Memunculkan Confetti
-        // Fungsi confetti yang lebih sederhana (built-in)
+<div id="secretMessage" class="surprise-content" style="display: none;">
+    "Happy Birthday untuk kamu yang paling spesial.
+    Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,
+    keberuntungan, dan semua impianmu tercapai.
+    Tertanda,
+    [Miftah]"
+</div>
+[21.20, 15/12/2025] mfth: <script>
+    // FUNGSI CONFETTI (Menggunakan library yang sudah di-link di head)
+    function playConfetti() {
         confetti({
             particleCount: 100,
             spread: 70,
-            origin: { y: 0.6 }
+            origin: { y: 0.6 } // Confetti jatuh dari atas
         });
     }
 
-    // 4. Memastikan Tombol Bekerja (Event Listener)
-    // Mencari elemen tombol dengan ID 'surprise-button'
+    // FUNGSI UTAMA KEJUTAN (Dipanggil saat tombol diklik)
+    function playSurprise() {
+        const audio = document.getElementById('musicPlayer');
+        const messageContainer = document.getElementById('secretMessage');
+        const buttonContainer = document.getElementById('button-container'); // Container Tombol ada di sekitar Baris 98
+
+        // 1. Memutar Musik
+        // Penggunaan .catch() untuk menghindari error Autoplay Blocker
+        audio.play().catch(e => console.error("Autoplay diblokir:", e));
+
+        // 2. Menampilkan Pesan dan Menyembunyikan Tombol
+        messageContainer.style.display = 'block'; // Tampilkan pesan
+        buttonContainer.style.display = 'none'; // Sembunyikan container tombol
+
+        // 3. Memunculkan Confetti
+        playConfetti();
+    }
+
+    // EVENT LISTENER: Memastikan tombol 'secretButton' memanggil 'playSurprise'
     document.addEventListener('DOMContentLoaded', () => {
-        const button = document.getElementById('surprise-button');
+        const button = document.getElementById('secretButton');
         if (button) {
             button.addEventListener('click', playSurprise);
         }
