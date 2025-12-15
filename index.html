@@ -95,23 +95,21 @@
 </head>
 <body>
 
-    <audio id="musicPlayer" src="monokrom.mp3" loop></audio> <div class="container">
-        <h1>🎉 Selamat Ulang Tahun! 🎉</h1>
-        <p>Buka pesan rahasia di bawah ini untuk kejutan kecil dari saya.</p>
-        
-        <button id="secretButton">Klik di Sini untuk Pesan Rahasia & Musik!</button>
+   <audio id="musicPlayer" src="monokrom.mp3" loop></audio>
 
-        <div id="secretMessage">
-            *PESAN RAHASIA ANDA:*
-            
-            "Happy Birthday untuk kamu yang paling spesial!
-            Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,
-            keberuntungan, dan semua impianmu tercapai.
-            
-            Tertanda,
-            [Miftah]"
-            
-            (Anda bisa edit bagian ini langsung di GitHub nanti)
+<div id="button-container" class="container">
+    <h1>Selamat Ulang Tahun!</h1>
+    <p>Buka pesan rahasia di bawah ini untuk kejutan kecil dari saya.</p>
+    <button id="secretButton">Klik di Sini untuk Pesan Rahasia & Musik!</button>
+</div>
+
+<div id="secretMessage" class="surprise-content" style="display: none;">
+    "Happy Birthday untuk kamu yang paling spesial.
+    Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,
+    keberuntungan, dan semua impianmu tercapai.
+    Tertanda,
+    [Miftah]"
+</div>
         </div>
     </div>
 
