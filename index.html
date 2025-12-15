@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SELAMAT ULANG TAHUN!</title>
-    <script src+https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
         body {
             display: flex;
@@ -71,84 +73,65 @@
         button:hover {
             transform: scale(1.05);
         }
-
-        /* Confetti CSS */
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: red;
-            opacity: 0;
-            animation: fall 5s infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
 
-   <audio id="musicPlayer" src="monokrom.mp3" loop></audio>
+    <audio id="musicPlayer" src="monokrom.mp3" loop></audio>
 
-<div id="button-container" class="container">
-    <h1>Selamat Ulang Tahun!</h1>
-    <p>Buka pesan rahasia di bawah ini untuk kejutan kecil dari saya.</p>
-    <button id="secretButton">Klik di Sini untuk Pesan Rahasia & Musik!</button>
-</div>
-
-<div id="secretMessage" class="surprise-content" style="display: none;">
-    "Happy Birthday untuk kamu yang paling spesial.
-    Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,
-    keberuntungan, dan semua impianmu tercapai.
-    Tertanda,
-    [Miftah]"
-</div>
-        </div>
+    <div id="button-container" class="container">
+        <h1>Selamat Ulang Tahun!</h1>
+        <p>Buka pesan rahasia di bawah ini untuk kejutan kecil dari saya.</p>
+        <button id="secretButton">Klik di Sini untuk Pesan Rahasia & Musik!</button>
     </div>
 
-    
-    // FUNGSI CONFETTI (Menggunakan library yang sudah di-link di head)
-    function playConfetti() {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 } // Confetti jatuh dari atas
-        });
-    }
+    <div id="secretMessage" class="surprise-content" style="display: none;">
+        <p>
+            "Happy Birthday untuk kamu yang paling spesial.<br>
+            Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,<br>
+            keberuntungan, dan semua impianmu tercapai.
+        </p>
+        <p>
+            Tertanda,<br>
+            [Miftah]
+        </p>
+    </div>
 
-    // FUNGSI UTAMA KEJUTAN (Dipanggil saat tombol diklik)
-    function playSurprise() {
-        const audio = document.getElementById('musicPlayer');
-        const messageContainer = document.getElementById('secretMessage');
-        const buttonContainer = document.getElementById('button-container'); // Container Tombol ada di sekitar Baris 98
-
-        // 1. Memutar Musik
-        // Penggunaan .catch() untuk menghindari error Autoplay Blocker
-        audio.play().catch(e => console.error("Autoplay diblokir:", e));
-
-        // 2. Menampilkan Pesan dan Menyembunyikan Tombol
-        messageContainer.style.display = 'block'; // Tampilkan pesan
-        buttonContainer.style.display = 'none'; // Sembunyikan container tombol
-
-        // 3. Memunculkan Confetti
-        playConfetti();
-    }
-
-    // EVENT LISTENER: Memastikan tombol 'secretButton' memanggil 'playSurprise'
-    document.addEventListener('DOMContentLoaded', () => {
-        const button = document.getElementById('secretButton');
-        if (button) {
-            button.addEventListener('click', playSurprise);
+    <script>
+        // FUNGSI CONFETTI (Memanggil library yang sudah di-link di head)
+        function playConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 } // Confetti jatuh dari atas
+            });
         }
-    });
-</script>
+
+        // FUNGSI UTAMA KEJUTAN
+        function playSurprise() {
+            const audio = document.getElementById('musicPlayer');
+            const messageContainer = document.getElementById('secretMessage');
+            const buttonContainer = document.getElementById('button-container'); 
+            
+            // 1. Memutar Musik (dengan penanganan Autoplay Blocker)
+            audio.play().catch(e => console.error("Autoplay diblokir:", e));
+
+            // 2. Menampilkan Pesan dan Menyembunyikan Tombol
+            messageContainer.style.display = 'block';
+            buttonContainer.style.display = 'none';
+
+            // 3. Memunculkan Confetti
+            playConfetti();
+        }
+
+        // EVENT LISTENER: Memastikan tombol merespons setelah halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('secretButton');
+            if (button) {
+                button.addEventListener('click', playSurprise);
+            }
+        });
+    </script>
+
 </body>
 </html>
