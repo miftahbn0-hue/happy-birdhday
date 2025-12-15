@@ -116,40 +116,34 @@
     </div>
 
     <script>
-        const button = document.getElementById('secretButton');
-        const message = document.getElementById('secretMessage');
-        const music = document.getElementById('musicPlayer');
-        let isRevealed = false;
 
-        // Fungsi untuk membuat confetti
-        function createConfetti() {
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.backgroundColor = hsl(${Math.random() * 360}, 100%, 50%);
-                confetti.style.animationDelay = Math.random() * 5 + 's';
-                document.body.appendChild(confetti);
-            }
-        }
+    // FUNGSI UTAMA UNTUK MEMUTAR KEJUTAN
+    function playSurprise() {
+        // 1. Memutar Musik (Pastikan ID-nya 'bday-music' di HTML atas)
+        const audio = document.getElementById('bday-music');
+        audio.play().catch(e => console.error("Autoplay diblokir:", e));
 
-        button.addEventListener('click', () => {
-            if (!isRevealed) {
-                // Tampilkan pesan
-                message.style.display = 'block';
-                
-                // Putar musik (akan otomatis berjalan karena ada interaksi user)
-                music.play();
-                
-                // Mulai Confetti
-                createConfetti();
-                
-                // Ubah teks tombol
-                button.textContent = '🎶 Musik sedang diputar, pesan sudah dibuka! 🎶';
-                
-                isRevealed = true;
-            }
+        // 2. Menampilkan Pesan dan Confetti
+        document.getElementById('surprise-container').style.display = 'flex';
+        document.getElementById('button-container').style.display = 'none';
+
+        // 3. Memunculkan Confetti
+        // Fungsi confetti yang lebih sederhana (built-in)
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
         });
-    </script>
+    }
+
+    // 4. Memastikan Tombol Bekerja (Event Listener)
+    // Mencari elemen tombol dengan ID 'surprise-button'
+    document.addEventListener('DOMContentLoaded', () => {
+        const button = document.getElementById('surprise-button');
+        if (button) {
+            button.addEventListener('click', playSurprise);
+        }
+    });
+</script>
 </body>
 </html>
