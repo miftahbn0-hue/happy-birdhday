@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
+        /* --- General Styling (RAMAI DAN CERIA) --- */
         body {
             display: flex;
             flex-direction: column;
@@ -15,24 +16,26 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #f7f7f7;
+            /* Background Gradien Ceria: Pink, Kuning, Biru */
+            background: linear-gradient(135deg, #ffd1dc 0%, #ffffb8 50%, #b8e0ff 100%); 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
             text-align: center;
         }
 
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 30px 40px;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
             max-width: 90%;
             margin-top: 20px;
         }
 
         h1 {
-            color: #e94e77;
-            font-size: 2.5em;
+            color: #ff69b4; /* Pink terang */
+            font-size: 2.8em;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
             margin-bottom: 5px;
         }
 
@@ -42,31 +45,49 @@
             margin-bottom: 25px;
         }
 
-        /* Styling untuk Pesan Rahasia Final */
+        /* --- Styling Pesan & Langkah --- */
         #secretMessage {
             margin-top: 20px;
             padding: 20px;
-            border: 2px dashed #999;
-            background-color: #fff9e6;
-            border-radius: 8px;
+            border: 3px solid #ff69b4; 
+            background-color: #fff0f5; /* Warna pink sangat pucat */
+            border-radius: 12px;
             display: none; 
             text-align: left;
         }
-
-        /* Styling untuk pesan transisi di Step 2 dan Step 3 */
-        #step2Container, #step3Container {
+        #step2Container, #step3Container, #finalSurpriseContainer {
             display: none;
         }
         #step2Message, #step3Message {
             font-size: 1.5em;
-            color: #4a4a4a;
+            color: #ff69b4;
             margin-bottom: 30px;
         }
 
-        /* Styling Tombol */
+        /* Styling Catatan yang Bisa Digeser */
+        #scrollableNote {
+            max-height: 200px; /* Tinggi Maksimal */
+            overflow-y: auto; /* Memunculkan Scroll Bar */
+            background-color: #fff;
+            border: 1px solid #ffb6c1; 
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        #scrollableNote::-webkit-scrollbar {
+            width: 8px;
+        }
+        #scrollableNote::-webkit-scrollbar-thumb {
+            background-color: #ff69b4;
+            border-radius: 10px;
+        }
+
+
+        /* --- Styling Tombol (Warna Menonjol) --- */
         button {
-            background-color: #ff9a8d;
-            background-image: linear-gradient(45deg, #ff9a8d 0%, #ff6a88 55%, #ff99ac 100%);
+            background-color: #ff4500;
+            background-image: linear-gradient(45deg, #ff69b4 0%, #ffc0cb 50%, #ff69b4 100%);
             border: none;
             color: white;
             padding: 15px 30px;
@@ -77,23 +98,50 @@
             margin-top: 10px;
             cursor: pointer;
             border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(255, 106, 136, 0.4);
-            transition: transform 0.2s;
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
+            transition: all 0.2s;
         }
-
         button:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.7);
         }
 
-        /* CSS untuk Efek Transisi Fade */
-        .fade-out {
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
+        /* --- Animasi & Transisi --- */
+        .fade-out { opacity: 0; transition: opacity 0.5s ease-out; }
+        .fade-in { opacity: 1; transition: opacity 1s ease-in; }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 8px solid #f3f3f3; 
+            border-top: 8px solid #ff69b4; 
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; 
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .fade-in {
-            opacity: 1;
-            transition: opacity 1s ease-in;
+        /* Animasi Kartun & Emot */
+        #finalEmot { font-size: 4em; margin-top: 20px; opacity: 0; display: none; animation: bounce 1s infinite alternate; }
+        @keyframes bounce {
+            0% { transform: translateY(0); opacity: 0.8; }
+            100% { transform: translateY(-10px); opacity: 1; }
+        }
+        #cartoonImage {
+            width: 150px; 
+            height: auto;
+            margin-bottom: 20px;
+            animation: pulsate 1.5s infinite alternate;
+            display: none; 
+        }
+        @keyframes pulsate {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
         }
     </style>
 </head>
@@ -113,23 +161,44 @@
     </div>
     
     <div id="step3Container" class="container">
-        <div id="step3Message">"Data rahasia telah diproses. Hanya satu klik lagi untuk membuka kejutan utamanya!"</div>
-        <button id="step3Button">Langkah 3: Buka Kejutan FINAL!</button>
+        <div id="step3Message">"Data rahasia sedang diproses. Ini butuh sedikit waktu..."</div>
+        <div class="spinner" id="processingSpinner"></div> 
+        <button id="step3Button" style="display: none;">Langkah 3: Buka Kejutan FINAL!</button>
     </div>
 
 
     <div id="secretMessage" class="surprise-content">
-        <p>
-            "Happy Birthday untuk kamu yang paling spesial.<br>
-            Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,<br>
-            keberuntungan, dan semua impianmu tercapai.
-        </p>
-        <p>
+        
+        <img id="cartoonImage" src="https://i.imgur.com/nL12F4r.png" alt="Happy Birthday Character">
+
+        <div id="scrollableNote">
+            <p style="font-weight: bold; font-size: 1.2em;">Catatan Spesial untukmu:</p>
+            <p>
+                "Happy Birthday untuk kamu yang paling spesial.<br>
+                Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,<br>
+                keberuntungan, dan semua impianmu tercapai.
+            </p>
+            <p>
+                **[AREA PESAN PANJANG]** <br>
+                Di sini kamu bisa menuliskan kenangan, harapan, atau janji-janji manis. Karena area ini bisa digeser, kamu bisa menulis ribuan kata tanpa membuat halaman berantakan di HP.<br><br>
+                Selamat menikmati kejutan ini, ya! Ini dibuat spesial dari hati.<br>
+            </p>
+            </div>
+        <p style="text-align: right; margin-top: 15px; font-style: italic;">
             Tertanda,<br>
             [Miftah]
         </p>
+        <div style="text-align: center;">
+            <span id="finalEmot">🥳</span>
+        </div>
     </div>
-
+    
+    <div id="finalSurpriseContainer" class="container" style="margin-top: 40px; border: 3px solid #ff69b4; display: none;">
+        <h2>🎉 KEJUTAN PAMUNGKAS! 🎉</h2>
+        <p>Setelah pesan yang begitu panjang, ini adalah *gift* atau hadiah kecil dariku!</p>
+        <button onclick="window.location.href='[LINK HADIAH/VIDEO/GAMBAR DI SINI]'">Klaim Hadiah Spesial</button>
+        <p style="font-size: 0.9em; margin-top: 15px;">Semoga hari ini jadi yang terbaik!</p>
+    </div>
     <script>
         // FUNGSI CONFETTI 
         function playConfetti() {
@@ -158,12 +227,12 @@
                     nextStep.classList.add('fade-in'); 
                 }
                 
-                // Jika ada callback (untuk kejutan final)
+                // Jika ada callback 
                 if (callback) {
                     callback();
                 }
 
-            }, 500); // Waktu sesuai transisi CSS
+            }, 500); 
         }
 
 
@@ -172,22 +241,48 @@
             transitionStep('step1Container', 'step2Container');
         }
 
-        // FUNGSI UNTUK KLIK KEDUA (Pindah ke Step 3)
+        // FUNGSI UNTUK KLIK KEDUA (Pindah ke Step 3, lalu munculkan Spinner)
         function startStep3() {
-            transitionStep('step2Container', 'step3Container');
+            const step3Button = document.getElementById('step3Button');
+            const spinner = document.getElementById('processingSpinner');
+
+            // Lakukan transisi ke Step 3
+            transitionStep('step2Container', 'step3Container', () => {
+                // Setelah Step 3 muncul:
+                spinner.style.display = 'block'; 
+                
+                // Tunggu 2 detik, lalu sembunyikan spinner dan tampilkan tombol
+                setTimeout(() => {
+                    spinner.style.display = 'none';
+                    step3Button.style.display = 'inline-block';
+                }, 2000); // Waktu Loading: 2 detik
+            });
         }
 
 
         // FUNGSI UNTUK KLIK KETIGA (Kejutan Final)
         function playSurprise() {
             const audio = document.getElementById('musicPlayer');
-            const messageContainer = document.getElementById('secretMessage');
+            const finalEmot = document.getElementById('finalEmot'); 
+            const cartoonImage = document.getElementById('cartoonImage'); 
+            const finalSurpriseContainer = document.getElementById('finalSurpriseContainer'); 
             
             // Lakukan transisi dari Step 3 ke Pesan Rahasia
             transitionStep('step3Container', 'secretMessage', () => {
                 // Setelah pesan muncul, putar musik & confetti
                 audio.play().catch(e => console.error("Autoplay diblokir:", e));
                 playConfetti();
+                
+                // Tampilkan dan animasikan emot dan kartun
+                finalEmot.style.display = 'inline-block';
+                finalEmot.style.opacity = 1;
+                cartoonImage.style.display = 'block';
+
+                // Timer untuk Kejutan Tambahan (Step 4)
+                setTimeout(() => {
+                    finalSurpriseContainer.style.display = 'block';
+                    finalSurpriseContainer.classList.add('fade-in'); 
+                }, 5000); // Kejutan tambahan muncul setelah 5 detik
             });
         }
 
