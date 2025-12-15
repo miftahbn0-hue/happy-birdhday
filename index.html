@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SELAMAT ULANG TAHUN!</title>
+    <script src+https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
             display: flex;
@@ -113,24 +114,7 @@
         </div>
     </div>
 
-    <script>
-
-   [21.13, 15/12/2025] mfth: <audio id="musicPlayer" src="monokrom.mp3" loop></audio>
-
-<div id="button-container" class="container">
-    <h1>Selamat Ulang Tahun!</h1>
-    <p>Buka pesan rahasia di bawah ini untuk kejutan kecil dari saya.</p>
-    <button id="secretButton">Klik di Sini untuk Pesan Rahasia & Musik!</button>
-</div>
-
-<div id="secretMessage" class="surprise-content" style="display: none;">
-    "Happy Birthday untuk kamu yang paling spesial.
-    Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,
-    keberuntungan, dan semua impianmu tercapai.
-    Tertanda,
-    [Miftah]"
-</div>
-[21.20, 15/12/2025] mfth: <script>
+    
     // FUNGSI CONFETTI (Menggunakan library yang sudah di-link di head)
     function playConfetti() {
         confetti({
