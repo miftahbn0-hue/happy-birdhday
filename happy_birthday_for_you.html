@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SELAMAT ULANG TAHUN!</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #e94e77;
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        p {
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+
+        #secretMessage {
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px dashed #999;
+            background-color: #fff9e6;
+            border-radius: 8px;
+            display: none; /* Awalnya disembunyikan */
+            text-align: left;
+            white-space: pre-wrap; /* Agar paragraf tetap terjaga */
+        }
+
+        button {
+            background-color: #ff9a8d;
+            background-image: linear-gradient(45deg, #ff9a8d 0%, #ff6a88 55%, #ff99ac 100%);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.2em;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(255, 106, 136, 0.4);
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Confetti CSS */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            opacity: 0;
+            animation: fall 5s infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="musicPlayer" src="monokrom.mp3" loop></audio> <div class="container">
+        <h1>🎉 Selamat Ulang Tahun! 🎉</h1>
+        <p>Buka pesan rahasia di bawah ini untuk kejutan kecil dari saya.</p>
+        
+        <button id="secretButton">Klik di Sini untuk Pesan Rahasia & Musik!</button>
+
+        <div id="secretMessage">
+            *PESAN RAHASIA ANDA:*
+            
+            "Happy Birthday untuk kamu yang paling spesial!
+            Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,
+            keberuntungan, dan semua impianmu tercapai.
+            
+            Tertanda,
+            [Miftah]"
+            
+            (Anda bisa edit bagian ini langsung di GitHub nanti)
+        </div>
+    </div>
+
+    <script>
+        const button = document.getElementById('secretButton');
+        const message = document.getElementById('secretMessage');
+        const music = document.getElementById('musicPlayer');
+        let isRevealed = false;
+
+        // Fungsi untuk membuat confetti
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = hsl(${Math.random() * 360}, 100%, 50%);
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+
+        button.addEventListener('click', () => {
+            if (!isRevealed) {
+                // Tampilkan pesan
+                message.style.display = 'block';
+                
+                // Putar musik (akan otomatis berjalan karena ada interaksi user)
+                music.play();
+                
+                // Mulai Confetti
+                createConfetti();
+                
+                // Ubah teks tombol
+                button.textContent = '🎶 Musik sedang diputar, pesan sudah dibuka! 🎶';
+                
+                isRevealed = true;
+            }
+        });
+    </script>
+</body>
+</html>
