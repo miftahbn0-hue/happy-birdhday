@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SELAMAT ULANG TAHUN!</title>
+    <title>HBD! - Sky Blue Special</title>
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        /* --- General Styling (RAMAI DAN CERIA) --- */
+        /* --- TEMA UTAMA: BIRU LANGIT GRADASI --- */
         body {
             display: flex;
             flex-direction: column;
@@ -16,307 +16,225 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #ffd1dc 0%, #ffffb8 50%, #b8e0ff 100%); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
+            /* Gradasi Biru Langit Ceria */
+            background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 50%, #E0F7FA 100%); 
+            font-family: 'Segoe UI', Arial, sans-serif;
             text-align: center;
+            color: #2c3e50;
+            transition: background 0.8s ease;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
-            max-width: 90%;
-            margin-top: 20px;
-        }
-
-        h1 {
-            color: #ff69b4; 
-            font-size: 2.8em;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
-            margin-bottom: 5px;
-        }
-
-        p {
-            color: #333;
-            font-size: 1.1em;
-            margin-bottom: 25px;
-        }
-
-        /* --- Styling Pesan & Langkah --- */
-        #secretMessage {
-            margin-top: 20px;
-            padding: 20px;
-            border: 3px solid #ff69b4; 
-            background-color: #fff0f5; 
-            border-radius: 12px;
-            display: none; 
-            text-align: left;
-        }
-        #step2Container, #step3Container, #zonkContainer, #finalSurpriseContainer {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 350px;
+            width: 90%;
+            border: 2px solid #fff;
             display: none;
+            animation: fadeIn 0.5s ease;
         }
 
-        /* Styling Catatan yang Bisa Digeser */
-        #scrollableNote {
-            max-height: 200px; 
-            overflow-y: auto; 
-            background-color: #fff;
-            border: 1px solid #ffb6c1; 
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 8px;
-            text-align: left;
-        }
-        #scrollableNote::-webkit-scrollbar {
-            width: 8px;
-        }
-        #scrollableNote::-webkit-scrollbar-thumb {
-            background-color: #ff69b4;
-            border-radius: 10px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
+        #step1Container { display: block; }
 
-        /* --- Styling Tombol (Warna Menonjol) --- */
+        h1 { color: #0077b6; margin-bottom: 10px; font-size: 1.8rem; }
+        p { line-height: 1.6; font-size: 1rem; color: #455a64; }
+
+        /* Tombol dengan warna yang seru (Deep Sky Blue) */
         button {
-            background-image: linear-gradient(45deg, #ff69b4 0%, #ffc0cb 50%, #ff69b4 100%);
-            border: none;
+            background: linear-gradient(45deg, #00b4d8, #48cae4);
             color: white;
-            padding: 15px 30px;
-            text-align: center;
-            display: inline-block;
-            font-size: 1.2em;
-            margin-top: 10px;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
-            border-radius: 50px;
-            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
-            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+            transition: 0.3s;
+            margin-top: 15px;
         }
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.7);
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 180, 216, 0.5); }
+
+        /* Loading Spinner khusus warna putih untuk background biru */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #0077b6;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Scrollable Note */
+        #scrollableNote {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f1faff;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px dashed #00b4d8;
+            text-align: left;
+            margin: 20px 0;
+            color: #333;
         }
 
-        /* --- Animasi ZONK --- */
+        /* Zonk Styling */
+        .zonk-shake { animation: shake 0.3s infinite; border: 4px solid #ff5252 !important; }
         @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+            0% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -2px); }
+            100% { transform: translate(1px, 1px); }
         }
 
-        .zonk-box {
-            animation: shake 0.5s; 
-            border: 5px solid #ff0000 !important; 
-            background-color: #ffe0e0 !important; 
-        }
-
-        /* --- CSS Tambahan untuk Pop-up Foto --- */
+        /* Pop-up Foto */
         #photoPopUp {
-            display: none; 
+            display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); 
-            z-index: 9999; 
-            text-align: center;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 119, 182, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
-
-        #photoPopUpContent {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        #popUpImage {
-            max-width: 100%;
-            max-height: 80vh; 
-            border-radius: 8px;
-            display: block;
-            margin: 0 auto 15px;
-        }
-
-        #closePopUp {
-            background-color: #ff69b4;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            cursor: pointer;
-            border-radius: 5px;
+        #photoPopUp img {
+            max-width: 85%;
+            max-height: 70%;
+            border: 5px solid white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
     </style>
 </head>
 <body>
 
+    <audio id="clickSound" src="tap.mp3"></audio>
     <audio id="musicPlayer" src="monokrom.mp3" loop></audio>
 
-    <div id="step1Container" class="container fade-in">
-        <h1>SELAMAT ULANG TAHUN!</h1>
-        <p>Ada kejutan rahasia yang tersembunyi. Dibutuhkan 3 langkah untuk membukanya.</p>
-        <button id="step1Button">Langkah 1: Klik untuk Memulai Misi</button>
+    <div id="step1Container" class="container">
+        <h1>Halo! ✨</h1>
+        <p>Ada sebuah pesan rahasia untukmu. Selesaikan 3 langkah mudah ini.</p>
+        <button onclick="handleNext('step1Container', 'step2Container')">Langkah 1</button>
     </div>
 
     <div id="step2Container" class="container">
-        <div id="step2Message">"Misi berhasil! Sekarang lanjutkan ke langkah kedua..."</div>
-        <button id="step2Button">Langkah 2: Proses Data Rahasia</button>
+        <h1>Langkah 2</h1>
+        <p>Memindai sidik jari digital...</p>
+        <button onclick="handleNext('step2Container', 'step3Container', startStep3Loading)">Langkah 2</button>
     </div>
-    
+
     <div id="step3Container" class="container">
-        <div id="step3Message">"Data rahasia sedang diproses. Ini butuh sedikit waktu..."</div>
-        <div class="spinner" id="processingSpinner"></div> 
-        <button id="step3Button" style="display: none;">Langkah 3: Buka Kejutan FINAL!</button>
+        <h1>Langkah 3</h1>
+        <div id="loader3" class="spinner"></div>
+        <p id="text3">Mengunduh data rahasia...</p>
+        <button id="finalBtn" style="display:none;" onclick="triggerZonkSequence()">Buka Kejutan!</button>
     </div>
 
-    <div id="zonkContainer" class="container" style="margin-top: 40px; display: none;">
-        <h2>🚨 ZONK! ERROR KEMBALI! 🚨</h2>
-        <p>File kejutanmu ternyata korup dan gagal dibuka. Proses dibatalkan!</p>
-        <button id="nextStepAfterZonk">Coba Lagi (Mungkin Berhasil Kali Ini?)</button>
+    <div id="zonkLoadingContainer" class="container" style="background: #0077b6 !important; color: white !important;">
+        <h1 style="color:white !important;">Memproses File...</h1>
+        <div class="spinner" style="border-top-color: #fff;"></div>
+        <p>Sistem sedang mendekripsi pesan, mohon tunggu sebentar...</p>
     </div>
 
-    <div id="secretMessage" class="surprise-content">
+    <div id="zonkErrorContainer" class="container zonk-shake">
+        <h1 style="color:#ff5252 !important;">🚨 SYSTEM ERROR 🚨</h1>
+        <p>Gagal memuat file kejutan (Error 404). File kemungkinan rusak!</p>
+        <button style="background: #ff5252;" onclick="handleNext('zonkErrorContainer', 'secretMessage', showSurprise)">Perbaiki Sekarang</button>
+    </div>
+
+    <div id="secretMessage" class="container">
+        <img src="dino.png" alt="Dino" style="width: 100px; margin-bottom: 10px;">
         
-        <img id="cartoonImage" src="dino.png.png" alt="Happy Birthday Character" style="width: 150px; height: auto; margin-bottom: 20px; display: none;">
-
+        <h1>Happy Birthday! 🎂</h1>
+        
         <div id="scrollableNote">
-            <p style="font-weight: bold; font-size: 1.2em;">Catatan Spesial untukmu:</p>
-            <p>
-                "Happy Birthday Dewii.<br>
-                Semoga hari ini dan tahun-tahun berikutnya penuh kebahagiaan,<br>
-                keberuntungan, dan semua impianmu tercapai.
-            </p>
-            <p>
-                "Saya harap kamu menjalani hari yang luar setiap harinya, dan semoga di usia yang baru ini kamu semakin dekat dengan semua impian dan tujuanmu. Semoga kebahagiaan dan kesuksesan selalu menyertai kamu". Happy birthday once again, take care!" <br>
-                Ini adalah area yang bisa digeser, jadi jangan ragu menulis banyak hal!<br><br>
-                Selamat menikmati kejutan ini, ya!<br>
-            </p>
+            <p><strong>Halo [Nama Mantan],</strong></p>
+            <p>Selamat ulang tahun ya! Saya harap kamu menjalani hari yang luar biasa hari ini.</p>
+            <p>Semoga di usia yang baru ini kamu semakin dekat dengan semua impian dan tujuanmu. Semoga kebahagiaan, kesehatan, dan kesuksesan selalu menyertai setiap langkahmu.</p>
+            <p>Terima kasih untuk semua kenangan baik yang pernah ada. Saya selalu mendoakan yang terbaik untukmu ke depannya. Selamat menikmati harimu!</p>
+            <p style="text-align: right;"><em>Dariku, [Nama Kamu]</em></p>
         </div>
 
-        <p style="text-align: right; margin-top: 15px; font-style: italic;">
-            Tertanda,<br>
-            [mfth]
-        </p>
-        <div style="text-align: center;">
-            <span id="finalEmot" style="font-size: 4em; margin-top: 20px; opacity: 0; display: none;">🥳</span>
-        </div>
+        <button onclick="showPopUp()">🎁 Buka Hadiah Spesial</button>
     </div>
-    
-    <div id="finalSurpriseContainer" class="container" style="margin-top: 40px; border: 3px solid #ff69b4; display: none;">
-        <h2>🎉 KEJUTAN PAMUNGKAS! 🎉</h2>
-        <p>Ini adalah Hadiah Tambahan yang sudah kamu tunggu-tunggu!</p>
-        
-        <button onclick="showPhotoPopUp('wk.png')">Buka Foto Hadiah Spesial</button>
 
-        <p style="font-size: 0.9em; margin-top: 15px;">Semoga hari ini jadi yang terbaik!</p>
-    </div>
-    
     <div id="photoPopUp" onclick="this.style.display='none'">
-        <div id="photoPopUpContent" onclick="event.stopPropagation()">
-            <img id="popUpImage" src="" alt="Hadiah Foto Spesial">
-            <button id="closePopUp" onclick="document.getElementById('photoPopUp').style.display='none'">Tutup Foto</button>
-        </div>
+        <img src="wk.png" alt="Hadiah Foto">
+        <p style="color:white; margin-top:20px; font-weight:bold;">✨ Kejutan Terakhir Untukmu ✨</p>
+        <p style="color:white; font-size: 0.8rem;">(Klik di mana saja untuk tutup)</p>
     </div>
-
 
     <script>
-        function playConfetti() {
-            confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+        // Bunyi Klik
+        function playClick() {
+            const snd = document.getElementById('clickSound');
+            snd.currentTime = 0;
+            snd.play().catch(e => console.log("Sound disabled by browser"));
         }
 
-        function transitionStep(currentStepId, nextStepId, callback = null) {
-            const currentStep = document.getElementById(currentStepId);
-            const nextStep = document.getElementById(nextStepId);
-            currentStep.classList.add('fade-out');
-            
+        // Transisi Step
+        function handleNext(curr, next, callback) {
+            playClick();
+            document.getElementById(curr).style.display = 'none';
+            document.getElementById(next).style.display = 'block';
+            if (callback) callback();
+        }
+
+        // Loading di Step 3
+        function startStep3Loading() {
             setTimeout(() => {
-                currentStep.style.display = 'none';
-                currentStep.classList.remove('fade-out');
-                
-                if (nextStep) {
-                    nextStep.style.display = 'block';
-                    nextStep.classList.add('fade-in'); 
-                }
-                if (callback) {
-                    callback();
-                }
-            }, 500); 
+                document.getElementById('loader3').style.display = 'none';
+                document.getElementById('text3').innerText = 'Data Terverifikasi!';
+                document.getElementById('finalBtn').style.display = 'inline-block';
+            }, 2500);
         }
 
-        function startStep2() { transitionStep('step1Container', 'step2Container'); }
+        // Alur Zonk dengan Background Biru Tua
+        function triggerZonkSequence() {
+            playClick();
+            document.body.style.background = "#023e8a"; // Berubah ke biru tua saat loading zonk
+            document.getElementById('step3Container').style.display = 'none';
+            document.getElementById('zonkLoadingContainer').style.display = 'block';
 
-        function startStep3() {
-            const step3Button = document.getElementById('step3Button');
-            const spinner = document.getElementById('processingSpinner');
-            transitionStep('step2Container', 'step3Container', () => {
-                spinner.style.display = 'block'; 
-                setTimeout(() => {
-                    spinner.style.display = 'none';
-                    step3Button.style.display = 'inline-block';
-                }, 2000); 
-            });
-        }
-        
-        function activateZonk() {
-            const zonkContainer = document.getElementById('zonkContainer');
-            transitionStep('step3Container', 'zonkContainer', () => {
-                zonkContainer.classList.add('zonk-box');
-                setTimeout(() => {
-                    zonkContainer.classList.remove('zonk-box');
-                }, 1500); 
-            });
+            setTimeout(() => {
+                document.body.style.background = "#ffebee"; // Berubah ke merah soft saat error
+                document.getElementById('zonkLoadingContainer').style.display = 'none';
+                document.getElementById('zonkErrorContainer').style.display = 'block';
+            }, 3000);
         }
 
-        function showRealSurprise() {
-            const audio = document.getElementById('musicPlayer');
-            const finalEmot = document.getElementById('finalEmot'); 
-            const cartoonImage = document.getElementById('cartoonImage'); 
-            const finalSurpriseContainer = document.getElementById('finalSurpriseContainer'); 
+        // Menampilkan Kejutan Asli
+        function showSurprise() {
+            // Kembali ke Biru Langit
+            document.body.style.background = "linear-gradient(135deg, #87CEEB 0%, #B0E0E6 50%, #E0F7FA 100%)";
             
-            transitionStep('zonkContainer', 'secretMessage', () => {
-                audio.play().catch(e => console.error("Autoplay diblokir:", e));
-                playConfetti();
-                
-                finalEmot.style.display = 'inline-block';
-                finalEmot.style.opacity = 1;
-                cartoonImage.style.display = 'block';
+            // Putar Musik
+            const music = document.getElementById('musicPlayer');
+            music.play();
 
-                setTimeout(() => {
-                    finalSurpriseContainer.style.display = 'block';
-                    finalSurpriseContainer.classList.add('fade-in'); 
-                }, 5000); 
+            // Efek Confetti
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#00b4d8', '#90e0ef', '#ffffff']
             });
         }
-        
-        // FUNGSI BARU: Menampilkan Foto di Pop-up
-        function showPhotoPopUp(imageSrc) {
-            const popUp = document.getElementById('photoPopUp');
-            const popUpImage = document.getElementById('popUpImage');
 
-            popUpImage.src = imageSrc; 
-            popUp.style.display = 'block';
+        // Menampilkan Pop-up wk.png
+        function showPopUp() {
+            playClick();
+            document.getElementById('photoPopUp').style.display = 'flex';
         }
-
-
-        // EVENT LISTENER
-        document.addEventListener('DOMContentLoaded', () => {
-            const step1Button = document.getElementById('step1Button');
-            const step2Button = document.getElementById('step2Button');
-            const step3Button = document.getElementById('step3Button');
-            const nextStepAfterZonk = document.getElementById('nextStepAfterZonk'); 
-
-            if (step1Button) { step1Button.addEventListener('click', startStep2); }
-            if (step2Button) { step2Button.addEventListener('click', startStep3); }
-            if (step3Button) { step3Button.addEventListener('click', activateZonk); }
-            if (nextStepAfterZonk) { nextStepAfterZonk.addEventListener('click', showRealSurprise); }
-        });
     </script>
-
 </body>
 </html>
